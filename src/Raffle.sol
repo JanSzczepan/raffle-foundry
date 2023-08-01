@@ -112,47 +112,47 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
       }
    }
 
-   function getRaffleState() public view returns (RaffleState) {
+   function getRaffleState() external view returns (RaffleState) {
       return s_raffleState;
    }
 
-   function getPlayer(uint256 _index) public view returns (address) {
+   function getPlayer(uint256 _index) external view returns (address) {
       return s_players[_index];
    }
 
-   function getRecentWinner() public view returns (address) {
+   function getRecentWinner() external view returns (address) {
       return s_recentWinner;
    }
 
-   function getVRFCoordinatorV2() public view returns (address) {
+   function getVRFCoordinatorV2() external view returns (address) {
       return address(i_VRFCoordinatorV2);
    }
 
-   function getGasLane() public view returns (bytes32) {
+   function getGasLane() external view returns (bytes32) {
       return i_gasLane;
    }
 
-   function getSubscriptionId() public view returns (uint64) {
+   function getSubscriptionId() external view returns (uint64) {
       return i_subscriptionId;
    }
 
-   function getCallbackGasLimit() public view returns (uint32) {
+   function getCallbackGasLimit() external view returns (uint32) {
       return i_callbackGasLimit;
    }
 
-   function getEntranceFee() public view returns (uint256) {
+   function getEntranceFee() external view returns (uint256) {
       return i_entraceFee;
    }
 
-   function getInterval() public view returns (uint256) {
+   function getInterval() external view returns (uint256) {
       return i_interval;
    }
 
-   function getRequestConfirmations() public pure returns (uint16) {
+   function getRequestConfirmations() external pure returns (uint16) {
       return REQUEST_CONFIRMATIONS;
    }
 
-   function getNumWords() public pure returns (uint32) {
+   function getNumWords() external pure returns (uint32) {
       return NUM_WORDS;
    }
 }
