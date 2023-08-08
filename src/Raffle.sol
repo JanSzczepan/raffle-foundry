@@ -82,7 +82,11 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
       (bool upkeepNeeded, ) = checkUpkeep("");
 
       if (!upkeepNeeded) {
-         revert Raffle__UpkeepNotNeeded(address(this).balance, s_players.length, uint256(s_raffleState));
+         revert Raffle__UpkeepNotNeeded(
+            address(this).balance,
+            s_players.length,
+            uint256(s_raffleState)
+         );
       }
 
       s_raffleState = RaffleState.CALCULATING;
@@ -96,7 +100,10 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
       );
    }
 
-   function fulfillRandomWords(uint256 /* _requestId */, uint256[] memory _randomWords) internal override {
+   function fulfillRandomWords(
+      uint256 /* _requestId */,
+      uint256[] memory _randomWords
+   ) internal override {
       address winner = s_players[_randomWords[0] % s_players.length];
       s_recentWinner = winner;
       s_players = new address payable[](0);
@@ -126,6 +133,10 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
 
    function getRecentWinner() external view returns (address) {
       return s_recentWinner;
+   }
+
+   function getLatestTimestamp() external view returns (uint256) {
+      return s_latestTimestamp;
    }
 
    function getVRFCoordinatorV2() external view returns (address) {
