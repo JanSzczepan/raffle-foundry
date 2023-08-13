@@ -4,11 +4,14 @@ pragma solidity ^0.8.18;
 import {Script, console} from "forge-std/Script.sol";
 import {DevOpsTools} from "foundry-devops/src/DevOpsTools.sol";
 import {HelperConfig} from "./HelperConfig.s.sol";
-import {VRFCoordinatorV2Mock} from "../test/mock/VRFCoordinatorV2Mock.sol";
-import {LinkToken} from "../test/mock/LinkToken.sol";
+import {VRFCoordinatorV2Mock} from "../test/mocks/VRFCoordinatorV2Mock.sol";
+import {LinkToken} from "../test/mocks/LinkToken.sol";
 
 contract CreateSubscription is Script {
-   function createSubscription(address _vrfCoordinatorV2Address, uint256 _deployerKey) public returns (uint64) {
+   function createSubscription(
+      address _vrfCoordinatorV2Address,
+      uint256 _deployerKey
+   ) public returns (uint64) {
       console.log("Creating subscription on chainId: ", block.chainid);
 
       vm.startBroadcast(_deployerKey);
@@ -23,7 +26,8 @@ contract CreateSubscription is Script {
 
    function createSubscriptionUsingConfig() internal returns (uint64) {
       HelperConfig helperConfig = new HelperConfig();
-      (address vrfCoordinatorV2Address, , , , , , , uint256 deployerKey) = helperConfig.activeNetworkConfig();
+      (address vrfCoordinatorV2Address, , , , , , , uint256 deployerKey) = helperConfig
+         .activeNetworkConfig();
 
       return createSubscription(vrfCoordinatorV2Address, deployerKey);
    }
@@ -57,7 +61,10 @@ contract AddConsumer is Script {
    }
 
    function run() external {
-      address mostRecentlyDeployed = DevOpsTools.get_most_recent_deployment("Raffle", block.chainid);
+      address mostRecentlyDeployed = DevOpsTools.get_most_recent_deployment(
+         "Raffle",
+         block.chainid
+      );
       addConsumerUsingConfig(mostRecentlyDeployed);
    }
 }
@@ -86,15 +93,27 @@ contract FundSubscription is Script {
          console.log(address(this));
 
          vm.startBroadcast(_deployerKey);
-         LinkToken(_link).transferAndCall(_vrfCoordinatorV2Address, FUND_AMOUNT, abi.encode(_subId));
+         LinkToken(_link).transferAndCall(
+            _vrfCoordinatorV2Address,
+            FUND_AMOUNT,
+            abi.encode(_subId)
+         );
          vm.stopBroadcast();
       }
    }
 
    function fundSubscriptionUsingConfig() internal {
       HelperConfig helperConfig = new HelperConfig();
-      (address vrfCoordinatorV2Address, , uint64 subId, , , , address link, uint256 deployerKey) = helperConfig
-         .activeNetworkConfig();
+      (
+         address vrfCoordinatorV2Address,
+         ,
+         uint64 subId,
+         ,
+         ,
+         ,
+         address link,
+         uint256 deployerKey
+      ) = helperConfig.activeNetworkConfig();
       fundSubscription(vrfCoordinatorV2Address, subId, link, deployerKey);
    }
 

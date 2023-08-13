@@ -4,7 +4,7 @@ pragma solidity ^0.8.18;
 import {Test} from "forge-std/Test.sol";
 import {Vm} from "forge-std/Vm.sol";
 import {Raffle} from "../../src/Raffle.sol";
-import {VRFCoordinatorV2Mock} from "../mock/VRFCoordinatorV2Mock.sol";
+import {VRFCoordinatorV2Mock} from "../mocks/VRFCoordinatorV2Mock.sol";
 import {HelperConfig} from "../../script/HelperConfig.s.sol";
 import {DeployRaffle} from "../../script/DeployRaffle.s.sol";
 
