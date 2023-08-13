@@ -37,6 +37,14 @@ contract RaffleTest is Test {
       _;
    }
 
+   modifier skipFork() {
+      if (block.chainid != 31337) {
+         return;
+      }
+
+      _;
+   }
+
    function setUp() external {
       DeployRaffle deployer = new DeployRaffle();
       (helperConfig, raffle) = deployer.run();
@@ -156,6 +164,7 @@ contract RaffleTest is Test {
       public
       raffleEntered
       timePassed
+      skipFork
    {
       vm.expectRevert("nonexistent request");
       VRFCoordinatorV2Mock(vrfCoordinatorV2Address).fulfillRandomWords(0, address(raffle));
@@ -163,7 +172,12 @@ contract RaffleTest is Test {
       VRFCoordinatorV2Mock(vrfCoordinatorV2Address).fulfillRandomWords(1, address(raffle));
    }
 
-   function testFulfillRandomWordsPicksWinnerResetsAndSendsMoney() public raffleEntered timePassed {
+   function testFulfillRandomWordsPicksWinnerResetsAndSendsMoney()
+      public
+      raffleEntered
+      timePassed
+      skipFork
+   {
       address expectedWinner = address(1);
 
       uint256 additionalEntrances = 3;
